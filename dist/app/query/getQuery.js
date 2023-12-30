@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getQuery = void 0;
+const filter_1 = require("./filter");
+const priceFiltering_1 = require("./priceFiltering");
+const dateFiltering_1 = require("./dateFiltering");
+const levelFiltering_1 = require("./levelFiltering");
+const tagsFiltering_1 = require("./tagsFiltering");
+const sort_1 = require("./sort");
+const paginate_1 = require("./paginate");
+const getQuery = (modelQuery, query) => {
+    const filteredQuery = (0, filter_1.filter)(modelQuery, query);
+    const priceQuery = (0, priceFiltering_1.PriceFilter)(filteredQuery, query);
+    const dateQuery = (0, dateFiltering_1.dateFilter)(priceQuery, query);
+    const levelQuery = (0, levelFiltering_1.levelFilter)(dateQuery, query);
+    const tagsQuery = (0, tagsFiltering_1.tagsFiltering)(levelQuery, query);
+    const sortQuery = (0, sort_1.sort)(tagsQuery, query);
+    const paginateQuery = (0, paginate_1.paginate)(sortQuery, query);
+    return paginateQuery;
+};
+exports.getQuery = getQuery;
